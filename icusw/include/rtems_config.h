@@ -2,6 +2,7 @@
 #define __RTEMS_CONFIG_H__
 
 #include <rtems.h>
+#include "tc_descriptor.h"
 
 rtems_task Init(rtems_task_argument arg);
 
@@ -16,6 +17,13 @@ rtems_task Init(rtems_task_argument arg);
 
 // Maximum number of tasks
 #define CONFIGURE_MAXIMUM_TASKS (2)
+
+// Maximum number of semaphores
+#define CONFIGURE_MAXIMUM_SEMAPHORES (1)
+
+#define CONFIGURE_MAXIMUM_MESSAGE_QUEUES (1)
+
+#define CONFIGURE_MESSAGE_BUFFER_MEMORY CONFIGURE_MESSAGE_BUFFERS_FOR_QUEUE(5, sizeof(tc_descriptor_t))
 
 // Ensure that the default initialization table is defined
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
