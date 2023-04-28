@@ -20,8 +20,6 @@ rtems_task manager_task (rtems_task_argument ignored) {
         tc_descriptor_t tc_descriptor;
         size_t size;
 
-        printf("Test");
-
         // TODO: Receive message from the queue
         rtems_message_queue_receive(
         		tc_message_queue_id,
@@ -39,8 +37,6 @@ rtems_task manager_task (rtems_task_argument ignored) {
 
         printf("Received telecommand (%d,%d)\n", tc_df_header.type,
                 tc_df_header.subtype);
-
-        printf("Test2");
 
         // TODO: Free the memory block of the descriptor
         tmtc_pool_free(tc_descriptor.p_tc_bytes);

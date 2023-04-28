@@ -66,7 +66,6 @@ rtems_task Init(rtems_task_argument ignored)
 	rtems_task_start(housekeeping_task_id,housekeeping_task,ignored);
 	rtems_task_start(manager_task_id,manager_task,ignored);
 	rtems_task_start(emu_tc_rx_task_id,emu_tc_rx_task,ignored);
-    printf("Hello World\n");
     rtems_message_queue_create(
     		rtems_build_name('T', 'C', 'M', 'Q'),
     		5,
@@ -74,7 +73,6 @@ rtems_task Init(rtems_task_argument ignored)
 			RTEMS_FIFO,
 			&tc_message_queue_id); // Creamos la cola de mensajes
     init_tmtc_pool();
-    printf("Hello World\n");
     rtems_task_delete(RTEMS_SELF);
     rtems_shutdown_executive(0);
 }

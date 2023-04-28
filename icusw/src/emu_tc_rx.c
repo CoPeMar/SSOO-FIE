@@ -1,6 +1,6 @@
 #include <rtems.h>
 #include <string.h>
-
+#include <stdio.h>
 #include "tmtc_channel.h"
 #include "tc_descriptor.h"
 #include "tmtc_pool.h"
@@ -28,10 +28,11 @@ rtems_task emu_tc_rx_task (rtems_task_argument ignored) {
     memcpy(tc_descriptor.p_tc_bytes, test_tc_17_1, 12);
     tc_descriptor.tc_num_bytes = 12;
 
-    rtems_message_queue_send(tc_message_queue_id, tc_descriptor.p_tc_bytes, sizeof(tc_descriptor_t)); //Enviamos mensaje
+    rtems_message_queue_send(tc_message_queue_id, &tc_descriptor, sizeof(tc_descriptor_t)); //Enviamos mensaje
 
     // The descriptor has been moved! We cannot use it beyond this point!
 
     rtems_task_delete(RTEMS_SELF);
+
 
 }

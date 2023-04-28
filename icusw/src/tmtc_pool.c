@@ -60,15 +60,14 @@ uint8_t * tmtc_pool_alloc() {
     uint8_t * ret = NULL;
 
     for(uint8_t i = 0; i < TMTC_POOL_MAX_NOE; i++){// Búsqueda lineal O(n)
+    	rtems_semaphore_obtain(tmtc_pool_mutex_id, RTEMS_WAIT, RTEMS_NO_TIMEOUT); // Coge el semáforo
     	if(the_tmtc_pool.free_blocks[i] == 1){ // Vemos si el bloque está libre
-    		rtems_semaphore_obtain(tmtc_pool_mutex_id, RTEMS_WAIT, RTEMS_NO_TIMEOUT); // Coge el semáforo
     		the_tmtc_pool.free_blocks[i] = 0; // Ocupamos el bloque
     		ret = the_tmtc_pool.blocks[i]; // Transferimos la dirección del bloque a ret
-    		rtems_semaphore_release(tmtc_pool_mutex_id); // Suelta el semáforo
     		break;
     	}
+    	rtems_semaphore_release(tmtc_pool_mutex_id); // Suelta el semáforo
     }
-
     return ret;
 
 }
@@ -84,13 +83,12 @@ void tmtc_pool_free(uint8_t * p_block) {
 
     // Check that the index is within the limits of the memory pool and that
     // the address is aligned to the beginning of a block.
-    if (index < TMTC_POOL_MAX_NOE && alignment == 0) {
 
-        rtems_semaphore_obtain(tmtc_pool_mutex_id, RTEMS_WAIT, RTEMS_NO_TIMEOUT); // Obtiene el semáforo
+    if (index < TMTC_POOL_MAX_NOE && alignment == 0) {
+    	rtems_semaphore_obtain(tmtc_pool_mutex_id, RTEMS_WAIT, RTEMS_NO_TIMEOUT); // Obtiene el semáforo
     	// Mark the block as free
         the_tmtc_pool.free_blocks[index] = 1;
         rtems_semaphore_release(tmtc_pool_mutex_id);
-
     }
 
 }
