@@ -1,0 +1,6 @@
+---
+mode: master
+mapping: socket
+port: 2500
+irq: 3
+verbose: yes

@@ -11,4 +11,11 @@ void init_housekeeping(void);
  */
 void do_housekeeping(void);
 
+/**
+ * \brief Identifier of the housekeeping task's message queue.
+ */
+extern rtems_id hk_message_queue_id;
+extern uint32_t interval;
+extern uint32_t interval_control;
+
 #endif // __HOUSEKEEPING__H__

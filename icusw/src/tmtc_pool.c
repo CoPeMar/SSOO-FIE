@@ -46,9 +46,9 @@ rtems_status_code init_tmtc_pool() {
 
     // Creación del mutex
     status = rtems_semaphore_create(rtems_build_name('P', 'M', 'T', 'X'),
-    						1,
-    						RTEMS_BINARY_SEMAPHORE,
-    						0,
+    						1, //Número de semáforos
+    						RTEMS_BINARY_SEMAPHORE | RTEMS_PRIORITY | RTEMS_PRIORITY_CEILING, //Tipo de semáforo
+    						5, //Techo de prioridad
     						&tmtc_pool_mutex_id);
 
     return status;
@@ -59,15 +59,15 @@ uint8_t * tmtc_pool_alloc() {
 
     uint8_t * ret = NULL;
 
+    rtems_semaphore_obtain(tmtc_pool_mutex_id, RTEMS_WAIT, RTEMS_NO_TIMEOUT); // Coge el semáforo
     for(uint8_t i = 0; i < TMTC_POOL_MAX_NOE; i++){// Búsqueda lineal O(n)
-    	rtems_semaphore_obtain(tmtc_pool_mutex_id, RTEMS_WAIT, RTEMS_NO_TIMEOUT); // Coge el semáforo
     	if(the_tmtc_pool.free_blocks[i] == 1){ // Vemos si el bloque está libre
     		the_tmtc_pool.free_blocks[i] = 0; // Ocupamos el bloque
     		ret = the_tmtc_pool.blocks[i]; // Transferimos la dirección del bloque a ret
     		break;
     	}
-    	rtems_semaphore_release(tmtc_pool_mutex_id); // Suelta el semáforo
     }
+    rtems_semaphore_release(tmtc_pool_mutex_id); // Suelta el semáforo
     return ret;
 
 }
