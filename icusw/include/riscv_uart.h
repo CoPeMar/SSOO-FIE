@@ -1,41 +1,47 @@
-/*
- * riscv_uart.h
- *
- *  Created on: 22 sept 2022
- *      Author: atcsol
- */
-
-#ifndef INCLUDE_RISCV_UART_H_
-#define INCLUDE_RISCV_UART_H_
+#ifndef RISCV_UART_H_
+#define RISCV_UART_H_
 
 #include <basic_types.h>
 
-// STATUS REGISTER MASKS
-#define RISCV_UART_DR   0x00000001  // UART DATA READY
-#define RISCV_UART_TF   0x00000200 // UART TX FIFO is full
-#define RISCV_UART_TE   0x00000004 // UART TX FIFO is empty
+void debug_putchar(char);
 
+/** \brief put a char in the UART FIFO buffer for sending it.
+ *
+ *	\param c char to send
+ *
+ *	\return 0 if there is no error, 1 if char cannot be inserted in the FIFO buffer
+ */
 
-// CONTROL REGISTER MASKS
-#define RISCV_UART_RXE   0x00000001 /* RX enable */
-#define RISCV_UART_TXE   0x00000002 /* TX enable */
-#define RISCV_UART_LB    0x00000080 /* Loop Back enable */
-#define RISCV_UART_RI    0x00000004 /* Receiver interrupt enable */
+  int8_t riscv_putchar(char c);
 
-int8_t riscv_putchar(char c);
+/** \brief check if UART Tx FIFO is empty
+ *
+ *	\param c char to send
+ *
+ *	\return 1 if UART Tx FIFO is empty
+ */
+int8_t riscv_uart_tx_fifo_is_empty();
 
 int32_t riscv_getchar();
 
-int8_t riscv_uart_tx_fifo_is_empty();
-
 void riscv_uart_enable_TX();
-void riscv_uart_disable_TX();
 
 void riscv_uart_enable_RX();
+
+void riscv_uart_enable_LB();
+
+void riscv_uart_enable_RI();
+
+void riscv_uart_disable_LB();
+
+void riscv_uart_disable_RI();
+
 void riscv_uart_disable_RX();
 
-void print_fields(uint8_t fieldata[255]);
-void clear_check();
+void riscv_uart_disable_TX();
 
 
-#endif /* INCLUDE_RISCV_UART_H_ */
+
+#define UART_IRQ 3
+
+#endif /* riscv_UART_H_ */

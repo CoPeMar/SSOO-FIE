@@ -34,4 +34,14 @@ uint16_t tm_channel_get_next_tm_count();
  */
 rtems_status_code tm_channel_send_tm(tm_descriptor_t descriptor);
 
+/**
+ * \brief Identifier of the TC reception task.
+ */
+extern rtems_id tc_rx_task_id;
+
+/**
+ * \brief Entry point of the TC reception task.
+ */
+rtems_task tc_rx_task (rtems_task_argument ignored);
+
 #endif /* INCLUDE_TMTC_CHANNEL_H_ */

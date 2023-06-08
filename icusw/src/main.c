@@ -112,13 +112,20 @@ rtems_task Init(rtems_task_argument ignored)
 			RTEMS_DEFAULT_MODES,
 			RTEMS_DEFAULT_ATTRIBUTES,
 			&housekeeping_task_id);
+	/*rtems_task_create(
+			rtems_build_name('T', 'C', 'R', 'X'),
+			5,
+			RTEMS_MINIMUM_STACK_SIZE,
+			RTEMS_DEFAULT_MODES,
+			RTEMS_DEFAULT_ATTRIBUTES,
+			&emu_tc_rx_task_id);*/
 	rtems_task_create(
 			rtems_build_name('T', 'C', 'R', 'X'),
 			5,
 			RTEMS_MINIMUM_STACK_SIZE,
 			RTEMS_DEFAULT_MODES,
 			RTEMS_DEFAULT_ATTRIBUTES,
-			&emu_tc_rx_task_id);
+			&tc_rx_task_id);
 	rtems_task_create(
 			rtems_build_name('M','N','G','T'),
 			8,
@@ -128,7 +135,7 @@ rtems_task Init(rtems_task_argument ignored)
 			&manager_task_id);
 	rtems_task_start(housekeeping_task_id,housekeeping_task,ignored);
 	rtems_task_start(manager_task_id,manager_task,ignored);
-	rtems_task_start(emu_tc_rx_task_id,emu_tc_rx_task,ignored);
+	rtems_task_start(tc_rx_task_id,tc_rx_task,ignored);
     rtems_message_queue_create(
     		rtems_build_name('T', 'C', 'M', 'Q'),
     		10,
@@ -142,7 +149,6 @@ rtems_task Init(rtems_task_argument ignored)
 			RTEMS_FIFO,
 			&hk_message_queue_id);
     init_tmtc_pool();
-    init_tm_channel();
     rtems_task_delete(RTEMS_SELF);
     rtems_shutdown_executive(0);
 }
